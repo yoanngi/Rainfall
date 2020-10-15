@@ -1,0 +1,57 @@
+/*
+**  Ghidra
+*/
+
+undefined4 main(undefined4 param_1,int param_2)
+
+{
+  int iVar1;
+  undefined4 uStack32;
+  undefined4 uStack28;
+  undefined4 uStack24;
+  undefined4 uStack20;
+  
+  iVar1 = atoi(*(undefined4 *)(param_2 + 4));
+  if (iVar1 == 0x1a7) {
+    uStack32 = strdup(&UNK_080c5348);
+    uStack28 = 0;
+    uStack20 = getegid();
+    uStack24 = geteuid();
+    setresgid(uStack20,uStack20,uStack20);
+    setresuid(uStack24,uStack24,uStack24);
+    execv(&UNK_080c5348,&uStack32);
+  }
+  else {
+    fwrite(&UNK_080c5350,1,5,stderr);
+  }
+  return 0;
+}
+
+/*
+**  Traduit
+*/
+
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#define _GNU_SOURCE 
+
+int main(int argc, char **argv)
+{
+  gid_t gid;
+  uid_t uid;
+  char *arg[2];
+
+  if (atoi(argv[1]) == 423)
+  {
+    arg[0] = strdup("/bin/sh");
+    arg[1] = 0;
+    gid = getegid();
+    uid = geteuid();
+    setresgid(gid, gid, gid);
+    setresuid(uid, uid, uid);
+    execv("/bin/sh", arg);
+  }
+  else
+    fwrite("No !\n", 1, 5, stderr);
+}
